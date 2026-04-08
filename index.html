@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operación Hipócrates · Investigación interactiva</title>
+  <meta name="description" content="Caso interactivo de estadística para identificar patrones anómalos de mortalidad sin usar notebook." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Caso interactivo · Publicable en GitHub Pages</div>
+      <h1>Operación Hipócrates</h1>
+      <p class="lead">
+        Investiga patrones anómalos de mortalidad en atención primaria. No necesitas programar:
+        exploras evidencias, eliges análisis y justificas una alerta estadística.
+      </p>
+      <div class="hero-actions">
+        <button class="primary-btn" id="startBtn">Comenzar investigación</button>
+        <button class="ghost-btn" id="resetBtn">Reiniciar progreso</button>
+      </div>
+      <p class="warning">
+        Objetivo docente: detectar una <strong>alerta estadística fundada</strong>, no declarar culpabilidad.
+      </p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="card progress-card">
+        <h2>Progreso</h2>
+        <div class="progress-bar"><span id="progressFill"></span></div>
+        <p id="progressText">0 de 5 fases completadas</p>
+      </section>
+
+      <nav class="stage-nav card">
+        <button class="stage-link active" data-stage="1">1. Triage inicial</button>
+        <button class="stage-link locked" data-stage="2">2. Patrón temporal</button>
+        <button class="stage-link locked" data-stage="3">3. Visitas y contexto</button>
+        <button class="stage-link locked" data-stage="4">4. Contraste estadístico</button>
+        <button class="stage-link locked" data-stage="5">5. Decisión final</button>
+      </nav>
+
+      <section class="card legend">
+        <h2>Cómo funciona</h2>
+        <ol>
+          <li>Explora las visualizaciones.</li>
+          <li>Responde la pregunta de la fase.</li>
+          <li>Desbloquea la siguiente etapa.</li>
+          <li>Termina redactando un informe PDF fuera de la web.</li>
+        </ol>
+      </section>
+    </aside>
+
+    <section class="content">
+      <section class="stage-panel visible" id="stage-1">
+        <div class="card">
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Fase 1</span>
+              <h2>Triage inicial</h2>
+            </div>
+            <span class="badge">Descriptiva</span>
+          </div>
+          <p>
+            Empieza por lo básico: cuántos pacientes tiene cada médico, cuántos fallecimientos aparecen y qué tasa bruta de mortalidad resulta.
+            Esta fase sirve para generar <strong>sospechas iniciales</strong>, no para sacar conclusiones definitivas.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card chart-card">
+            <div class="card-head">
+              <h3>Tasa de mortalidad por médico</h3>
+              <p>Ordenada de mayor a menor.</p>
+            </div>
+            <canvas id="mortalityChart"></canvas>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Tabla resumen</h3>
+              <p>Pasa el ratón o consulta la tabla para comparar contexto.</p>
+            </div>
+            <div class="table-wrap">
+              <table id="summaryTable">
+                <thead>
+                  <tr>
+                    <th>Médico</th>
+                    <th>Pacientes</th>
+                    <th>Fallecimientos</th>
+                    <th>Tasa</th>
+                    <th>Consulta</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card question-card">
+          <h3>Pregunta de desbloqueo</h3>
+          <p>¿Cuál es la mejor conclusión tras este primer vistazo?</p>
+          <div class="answers" data-question="q1">
+            <button data-correct="false">D13 es culpable: la tasa más alta basta para acusar.</button>
+            <button data-correct="true">D13 y D10 merecen revisión, pero la tasa bruta por sí sola no basta.</button>
+            <button data-correct="false">No hay ninguna señal que justifique seguir investigando.</button>
+          </div>
+          <p class="feedback" id="feedback-q1"></p>
+        </div>
+      </section>
+
+      <section class="stage-panel" id="stage-2">
+        <div class="card">
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Fase 2</span>
+              <h2>Patrón temporal</h2>
+            </div>
+            <span class="badge">Visualización</span>
+          </div>
+          <p>
+            La tasa no siempre es la señal más fuerte. Revisa ahora la distribución horaria de los fallecimientos y compara un médico concreto con el resto.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="controls">
+              <label for="doctorSelectHour">Médico a inspeccionar</label>
+              <select id="doctorSelectHour"></select>
+            </div>
+            <canvas id="hourChart"></canvas>
+          </div>
+          <div class="card insight-card">
+            <h3>Lectura rápida</h3>
+            <div id="hourInsight" class="stat-list"></div>
+          </div>
+        </div>
+
+        <div class="card question-card">
+          <h3>Pregunta de desbloqueo</h3>
+          <p>¿Qué médico muestra la concentración más extraña de muertes entre las 12:00 y las 15:59?</p>
+          <div class="answers" data-question="q2">
+            <button data-value="D10">D10</button>
+            <button data-value="D13" data-correct="true">D13</button>
+            <button data-value="D18">D18</button>
+          </div>
+          <p class="feedback" id="feedback-q2"></p>
+        </div>
+      </section>
+
+      <section class="stage-panel" id="stage-3">
+        <div class="card">
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Fase 3</span>
+              <h2>Visitas y contexto</h2>
+            </div>
+            <span class="badge">Comparación de proporciones</span>
+          </div>
+          <p>
+            Contrasta ahora dos señales contextuales: visita domiciliaria el mismo día y lugar del fallecimiento.
+            No se trata de encontrar una sola cifra extrema, sino un <strong>patrón consistente</strong>.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="controls">
+              <label for="doctorSelectContext">Médico a comparar</label>
+              <select id="doctorSelectContext"></select>
+            </div>
+            <canvas id="contextChart"></canvas>
+          </div>
+          <div class="card insight-card">
+            <h3>Lectura rápida</h3>
+            <div id="contextInsight" class="stat-list"></div>
+          </div>
+        </div>
+
+        <div class="card question-card">
+          <h3>Pregunta de desbloqueo</h3>
+          <p>Junto con la concentración horaria, ¿qué variable aporta la señal más fuerte en el caso anómalo?</p>
+          <div class="answers" data-question="q3">
+            <button data-correct="false">Sexo del paciente</button>
+            <button data-correct="true">Visita domiciliaria el mismo día</button>
+            <button data-correct="false">Tipo de consulta del médico</button>
+          </div>
+          <p class="feedback" id="feedback-q3"></p>
+        </div>
+      </section>
+
+      <section class="stage-panel" id="stage-4">
+        <div class="card">
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Fase 4</span>
+              <h2>Contraste estadístico</h2>
+            </div>
+            <span class="badge">Inferencia</span>
+          </div>
+          <p>
+            En esta fase puedes elegir un médico y una señal binaria. La web comparará <strong>ese médico frente al resto</strong>
+            usando intervalos de confianza y una prueba z para diferencia de proporciones.
+          </p>
+        </div>
+
+        <div class="grid-3 controls-row">
+          <div class="card compact">
+            <label for="doctorSelectTest">Médico</label>
+            <select id="doctorSelectTest"></select>
+          </div>
+          <div class="card compact">
+            <label for="indicatorSelect">Indicador</label>
+            <select id="indicatorSelect">
+              <option value="midday">Muertes entre 12:00 y 15:59</option>
+              <option value="home_visit">Visita domiciliaria el mismo día</option>
+              <option value="home_death">Fallecimiento en domicilio</option>
+            </select>
+          </div>
+          <div class="card compact center-card">
+            <button class="primary-btn full-btn" id="runTestBtn">Calcular contraste</button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Resultado</h3>
+            <div id="testResults" class="test-results"></div>
+          </div>
+          <div class="card">
+            <h3>Tabla 2×2</h3>
+            <div id="contingencyTable"></div>
+          </div>
+        </div>
+
+        <div class="card question-card">
+          <h3>Pregunta de desbloqueo</h3>
+          <p>¿Qué interpretación es la más correcta si una señal presenta p muy pequeño y un efecto grande?</p>
+          <div class="answers" data-question="q4">
+            <button data-correct="false">Prueba que el médico es culpable.</button>
+            <button data-correct="true">Apoya que el patrón es anómalo y merece investigación adicional, pero no prueba causalidad.</button>
+            <button data-correct="false">Permite ignorar explicaciones alternativas.</button>
+          </div>
+          <p class="feedback" id="feedback-q4"></p>
+        </div>
+      </section>
+
+      <section class="stage-panel" id="stage-5">
+        <div class="card">
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Fase 5</span>
+              <h2>Decisión final</h2>
+            </div>
+            <span class="badge">Síntesis</span>
+          </div>
+          <p>
+            Ya has revisado descriptiva, visualización e inferencia. Cierra el caso con una decisión prudente y prepara tu informe.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Conclusión recomendada</h3>
+            <div id="finalRecommendation" class="final-box"></div>
+          </div>
+          <div class="card">
+            <h3>Checklist para el PDF</h3>
+            <ul class="checklist">
+              <li>Pregunta de investigación bien formulada.</li>
+              <li>Resumen descriptivo inicial y límites de la tasa bruta.</li>
+              <li>Patrones temporales y de visitas domiciliarias.</li>
+              <li>Al menos un contraste de proporciones bien interpretado.</li>
+              <li>Diferencia clara entre anomalía estadística y culpabilidad.</li>
+              <li>Posibles explicaciones alternativas y datos adicionales necesarios.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card question-card">
+          <h3>Cierre</h3>
+          <p>¿Qué médico merece ser elevado a investigación formal prioritaria?</p>
+          <div class="answers" data-question="q5">
+            <button data-value="D10">D10</button>
+            <button data-value="D13" data-correct="true">D13</button>
+            <button data-value="D18">D18</button>
+          </div>
+          <p class="feedback" id="feedback-q5"></p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Diseñado para publicación estática en GitHub Pages. HTML, CSS y JavaScript puro.</p>
+  </footer>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
