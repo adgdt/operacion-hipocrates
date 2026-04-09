@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Operación Hipócrates · Investigación interactiva</title>
-  <meta name="description" content="Caso interactivo de estadística para identificar patrones anómalos de mortalidad sin usar notebook." />
+  <title>Operación Hipócrates · Expediente interactivo</title>
+  <meta name="description" content="Expediente interactivo de estadística forense para GitHub Pages. Investiga patrones anómalos de mortalidad sin usar notebook." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,105 +14,247 @@
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <div class="eyebrow">Caso interactivo · Publicable en GitHub Pages</div>
+      <div class="eyebrow">Expediente interactivo · GitHub Pages · Sin notebook</div>
       <h1>Operación Hipócrates</h1>
       <p class="lead">
-        Investiga patrones anómalos de mortalidad en atención primaria. No necesitas programar:
-        exploras evidencias, eliges análisis y justificas una alerta estadística.
+        Un caso inspirado en una investigación real. Tu misión es revisar un expediente de mortalidad anómala,
+        conectar señales dispersas y firmar un <strong>informe preliminar</strong> capaz de activar una investigación
+        formal prioritaria.
       </p>
       <div class="hero-actions">
-        <button class="primary-btn" id="startBtn">Comenzar investigación</button>
+        <button class="primary-btn" id="startBtn">Abrir expediente</button>
         <button class="ghost-btn" id="resetBtn">Reiniciar progreso</button>
       </div>
-      <p class="warning">
-        Objetivo docente: detectar una <strong>alerta estadística fundada</strong>, no declarar culpabilidad.
-      </p>
+      <p class="status-line" id="globalStatus">Listo para comenzar.</p>
     </div>
   </header>
 
   <main class="layout">
     <aside class="sidebar">
       <section class="card progress-card">
-        <h2>Progreso</h2>
+        <div class="card-title-row">
+          <h2>Estado del caso</h2>
+          <span class="soft-badge">4 hitos</span>
+        </div>
         <div class="progress-bar"><span id="progressFill"></span></div>
-        <p id="progressText">0 de 5 fases completadas</p>
+        <p id="progressText">0 de 4 hitos completados</p>
       </section>
 
       <nav class="stage-nav card">
-        <button class="stage-link active" data-stage="1">1. Triage inicial</button>
-        <button class="stage-link locked" data-stage="2">2. Patrón temporal</button>
-        <button class="stage-link locked" data-stage="3">3. Visitas y contexto</button>
-        <button class="stage-link locked" data-stage="4">4. Contraste estadístico</button>
-        <button class="stage-link locked" data-stage="5">5. Decisión final</button>
+        <button class="stage-link active" data-stage="0">0. Briefing</button>
+        <button class="stage-link locked" data-stage="1">1. Sala de análisis</button>
+        <button class="stage-link locked" data-stage="2">2. Contrastes</button>
+        <button class="stage-link locked" data-stage="3">3. Informe final</button>
       </nav>
 
-      <section class="card legend">
-        <h2>Cómo funciona</h2>
-        <ol>
-          <li>Explora las visualizaciones.</li>
-          <li>Responde la pregunta de la fase.</li>
-          <li>Desbloquea la siguiente etapa.</li>
-          <li>Termina redactando un informe PDF fuera de la web.</li>
-        </ol>
+      <section class="card dossier-card">
+        <div class="card-title-row">
+          <h2>Expediente</h2>
+          <span class="soft-badge" id="evidenceCounter">0 evidencias</span>
+        </div>
+        <p class="muted small">Necesitas reunir varias evidencias de tipos distintos para abrir la sala de contrastes.</p>
+        <div id="evidenceBoard" class="evidence-board"></div>
+      </section>
+
+      <section class="card notes-card">
+        <div class="card-title-row">
+          <h2>Notas del analista</h2>
+          <button class="tiny-btn" id="clearNotesBtn">Vaciar</button>
+        </div>
+        <textarea id="notesArea" rows="8" placeholder="Anota hipótesis, dudas, posibles sesgos, ideas para el informe..."></textarea>
+        <p class="muted small">Estas notas se guardan en tu navegador y pueden incluirse en el borrador final.</p>
       </section>
     </aside>
 
     <section class="content">
-      <section class="stage-panel visible" id="stage-1">
+      <section class="stage-panel visible" id="stage-0">
+        <div class="card dossier-hero">
+          <div class="file-stamp">CONFIDENCIAL · DOSSIER DOCENTE</div>
+          <div class="stage-header">
+            <div>
+              <span class="kicker">Briefing</span>
+              <h2>Una alerta, un sistema sanitario y un patrón que no encaja</h2>
+            </div>
+            <span class="badge">Contexto</span>
+          </div>
+          <p>
+            Este caso se inspira en el <strong>caso real de Harold Shipman</strong>, el médico británico cuya actividad llegó a mostrar
+            patrones anómalos en registros de mortalidad y horarios de fallecimiento. Aquí no vas a reproducir ese caso histórico,
+            sino trabajar con un <strong>dataset sintético</strong> construido para que practiques razonamiento estadístico aplicado.
+          </p>
+          <div class="grid-2">
+            <div class="brief-card">
+              <h3>Tu papel</h3>
+              <p>
+                Formas parte de un equipo independiente de analistas. Tu informe decidirá si existe base suficiente
+                para elevar una <strong>alerta estadística fundada</strong> y activar una revisión formal del caso.
+              </p>
+            </div>
+            <div class="brief-card">
+              <h3>Tu producto final</h3>
+              <p>
+                Debes cerrar el expediente con un borrador exportable: médico prioritario, evidencias clave, explicaciones alternativas
+                y una conclusión prudente apta para un PDF académico.
+              </p>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div class="mini-brief">
+              <h4>Qué sí haces</h4>
+              <ul>
+                <li>Explorar patrones</li>
+                <li>Comparar médicos</li>
+                <li>Interpretar incertidumbre</li>
+                <li>Justificar una alerta</li>
+              </ul>
+            </div>
+            <div class="mini-brief">
+              <h4>Qué no haces</h4>
+              <ul>
+                <li>Cerrar el caso con una sola señal</li>
+                <li>Confundir señal con causa</li>
+                <li>Usar un único gráfico como sentencia</li>
+                <li>Ignorar explicaciones alternativas</li>
+              </ul>
+            </div>
+            <div class="mini-brief emphasis">
+              <h4>Clave narrativa</h4>
+              <p>
+                Lo emocionante no es “acertar un nombre”, sino construir un caso estadístico sólido bajo presión y con información imperfecta.
+              </p>
+            </div>
+          </div>
+          <div class="hero-actions compact-actions">
+            <button class="primary-btn" id="briefingStartBtn">Entrar en la sala de análisis</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage-panel" id="stage-1">
         <div class="card">
           <div class="stage-header">
             <div>
               <span class="kicker">Fase 1</span>
-              <h2>Triage inicial</h2>
+              <h2>Sala de análisis</h2>
             </div>
-            <span class="badge">Descriptiva</span>
+            <span class="badge">Ruta abierta</span>
           </div>
           <p>
-            Empieza por lo básico: cuántos pacientes tiene cada médico, cuántos fallecimientos aparecen y qué tasa bruta de mortalidad resulta.
-            Esta fase sirve para generar <strong>sospechas iniciales</strong>, no para sacar conclusiones definitivas.
+            No hay una ruta única. Puedes abrir las pruebas en el orden que prefieras y añadir hallazgos al expediente.
+            La idea es construir una lectura propia del caso a partir de variables, comparaciones y contrastes.
           </p>
         </div>
 
-        <div class="grid-2">
-          <div class="card chart-card">
-            <div class="card-head">
-              <h3>Tasa de mortalidad por médico</h3>
-              <p>Ordenada de mayor a menor.</p>
-            </div>
-            <canvas id="mortalityChart"></canvas>
+        <div class="card module-shell">
+          <div class="module-tabs" role="tablist">
+            <button class="module-tab active" data-module="mortality">Tasa bruta</button>
+            <button class="module-tab" data-module="age">Edad</button>
+            <button class="module-tab" data-module="hour">Horario</button>
+            <button class="module-tab" data-module="context">Visitas y lugar</button>
           </div>
 
-          <div class="card">
-            <div class="card-head">
-              <h3>Tabla resumen</h3>
-              <p>Pasa el ratón o consulta la tabla para comparar contexto.</p>
+          <section class="module-panel visible" id="module-mortality">
+            <div class="card-title-row">
+              <h3>Tasa bruta de mortalidad</h3>
+              <span class="soft-badge">Señal descriptiva</span>
             </div>
-            <div class="table-wrap">
-              <table id="summaryTable">
-                <thead>
-                  <tr>
-                    <th>Médico</th>
-                    <th>Pacientes</th>
-                    <th>Fallecimientos</th>
-                    <th>Tasa</th>
-                    <th>Consulta</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <p class="muted">Sirve para comparar médicos en términos generales. Úsala como punto de partida antes de entrar en variables más específicas.</p>
+            <div class="explain-box"><strong>Qué estás viendo:</strong> <code>Pacientes</code> es el número de personas asignadas a cada médico; <code>Fallecimientos</code> es el número de muertes registradas en el periodo; <code>Tasa</code> = fallecimientos / pacientes. Esta tasa resume frecuencia, no mecanismo, ni ajusta por diferencias de composición entre carteras.</div>
+            <div class="grid-2">
+              <div class="chart-card"><canvas id="mortalityChart"></canvas></div>
+              <div>
+                <div class="table-wrap">
+                  <table id="summaryTable">
+                    <thead>
+                      <tr>
+                        <th data-sort="doctor_id">Médico</th>
+                        <th data-sort="patients">Pacientes</th>
+                        <th data-sort="deaths">Fallecimientos</th>
+                        <th data-sort="mortality_rate">Tasa</th>
+                        <th data-sort="doctor_practice_type">Consulta</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <p class="muted small">Haz clic en una fila si quieres usar ese médico como candidato en los otros módulos.</p>
+              </div>
             </div>
-          </div>
-        </div>
+            <div id="mortalityInsight" class="insight-strip"></div>
+            <div class="module-actions">
+              <button class="primary-btn" id="addMortalityEvidenceBtn">Añadir hallazgo al expediente</button>
+              <p class="feedback-inline" id="mortalityFeedback"></p>
+            </div>
+          </section>
 
-        <div class="card question-card">
-          <h3>Pregunta de desbloqueo</h3>
-          <p>¿Cuál es la mejor conclusión tras este primer vistazo?</p>
-          <div class="answers" data-question="q1">
-            <button data-correct="false">D13 es culpable: la tasa más alta basta para acusar.</button>
-            <button data-correct="true">D13 y D10 merecen revisión, pero la tasa bruta por sí sola no basta.</button>
-            <button data-correct="false">No hay ninguna señal que justifique seguir investigando.</button>
-          </div>
-          <p class="feedback" id="feedback-q1"></p>
+          <section class="module-panel" id="module-age">
+            <div class="card-title-row">
+              <h3>Perfil de edad de los fallecidos</h3>
+              <span class="soft-badge">Descriptiva robusta</span>
+            </div>
+            <p class="muted">Aquí puedes valorar si el perfil de edad de los fallecidos del médico se parece o no al del resto del sistema.</p>
+            <div class="explain-box"><strong>Qué mide esta variable:</strong> <code>patient_age</code> es la edad del paciente fallecido. Aquí se compara la distribución de edades de los fallecidos, no la edad de toda la cartera. <strong>Mediana</strong> es el valor central; <strong>IQR</strong> es el rango entre el primer y el tercer cuartil y resume la dispersión de la mitad central de los casos. <strong>Pregunta útil:</strong> ¿el perfil etario del médico es parecido al del resto o podría estar desplazando la lectura del caso?</div>
+            <div class="controls">
+              <label for="doctorSelectAge">Médico a inspeccionar</label>
+              <select id="doctorSelectAge"></select>
+            </div>
+            <div class="grid-2">
+              <div class="chart-card"><canvas id="ageChart"></canvas></div>
+              <div class="stat-list" id="ageInsight">
+                <div class="placeholder-box">Selecciona un médico para comparar medianas, IQR y distribución por tramos de edad.</div>
+              </div>
+            </div>
+            <div class="module-actions">
+              <button class="primary-btn" id="addAgeEvidenceBtn" disabled>Añadir hallazgo al expediente</button>
+              <p class="feedback-inline" id="ageFeedback"></p>
+            </div>
+          </section>
+
+          <section class="module-panel" id="module-hour">
+            <div class="card-title-row">
+              <h3>Patrón horario de fallecimiento</h3>
+              <span class="soft-badge">Señal operacional</span>
+            </div>
+            <p class="muted">Esta vista permite comparar la distribución temporal de los fallecimientos entre un médico y el resto del sistema.</p>
+            <div class="explain-box"><strong>Qué mide esta variable:</strong> <code>hour_of_death</code> es la hora registrada del fallecimiento. Agrupar por franjas permite comparar patrones temporales entre un médico y el resto del sistema. <strong>Pregunta útil:</strong> ¿alguna franja concentra un porcentaje de casos claramente distinto al del resto?</div>
+            <div class="controls">
+              <label for="doctorSelectHour">Médico a inspeccionar</label>
+              <select id="doctorSelectHour"></select>
+            </div>
+            <div class="grid-2">
+              <div class="chart-card"><canvas id="hourChart"></canvas></div>
+              <div class="stat-list" id="hourInsight">
+                <div class="placeholder-box">Selecciona un médico para comparar franjas horarias frente al resto del sistema.</div>
+              </div>
+            </div>
+            <div class="module-actions">
+              <button class="primary-btn" id="addHourEvidenceBtn" disabled>Añadir hallazgo al expediente</button>
+              <p class="feedback-inline" id="hourFeedback"></p>
+            </div>
+          </section>
+
+          <section class="module-panel" id="module-context">
+            <div class="card-title-row">
+              <h3>Visitas domiciliarias y lugar de muerte</h3>
+              <span class="soft-badge">Contexto operativo</span>
+            </div>
+            <p class="muted">Esta vista describe el contexto en el que se producen los casos y permite compararlo con el resto del sistema.</p>
+            <div class="explain-box"><strong>Qué miden estas variables:</strong> <code>home_visit_same_day</code> indica si hubo visita domiciliaria del médico ese mismo día (0/1). <code>place_of_death</code> recoge el lugar del fallecimiento. Ambas variables describen el contexto operativo de los casos, pero no explican por sí solas la causa del fallecimiento.</div>
+            <div class="controls">
+              <label for="doctorSelectContext">Médico a inspeccionar</label>
+              <select id="doctorSelectContext"></select>
+            </div>
+            <div class="grid-2">
+              <div class="chart-card"><canvas id="contextChart"></canvas></div>
+              <div class="stat-list" id="contextInsight">
+                <div class="placeholder-box">Selecciona un médico para comparar visitas domiciliarias y lugar del fallecimiento.</div>
+              </div>
+            </div>
+            <div class="module-actions">
+              <button class="primary-btn" id="addContextEvidenceBtn" disabled>Añadir hallazgo al expediente</button>
+              <p class="feedback-inline" id="contextFeedback"></p>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -121,95 +263,15 @@
           <div class="stage-header">
             <div>
               <span class="kicker">Fase 2</span>
-              <h2>Patrón temporal</h2>
-            </div>
-            <span class="badge">Visualización</span>
-          </div>
-          <p>
-            La tasa no siempre es la señal más fuerte. Revisa ahora la distribución horaria de los fallecimientos y compara un médico concreto con el resto.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="controls">
-              <label for="doctorSelectHour">Médico a inspeccionar</label>
-              <select id="doctorSelectHour"></select>
-            </div>
-            <canvas id="hourChart"></canvas>
-          </div>
-          <div class="card insight-card">
-            <h3>Lectura rápida</h3>
-            <div id="hourInsight" class="stat-list"></div>
-          </div>
-        </div>
-
-        <div class="card question-card">
-          <h3>Pregunta de desbloqueo</h3>
-          <p>¿Qué médico muestra la concentración más extraña de muertes entre las 12:00 y las 15:59?</p>
-          <div class="answers" data-question="q2">
-            <button data-value="D10">D10</button>
-            <button data-value="D13" data-correct="true">D13</button>
-            <button data-value="D18">D18</button>
-          </div>
-          <p class="feedback" id="feedback-q2"></p>
-        </div>
-      </section>
-
-      <section class="stage-panel" id="stage-3">
-        <div class="card">
-          <div class="stage-header">
-            <div>
-              <span class="kicker">Fase 3</span>
-              <h2>Visitas y contexto</h2>
-            </div>
-            <span class="badge">Comparación de proporciones</span>
-          </div>
-          <p>
-            Contrasta ahora dos señales contextuales: visita domiciliaria el mismo día y lugar del fallecimiento.
-            No se trata de encontrar una sola cifra extrema, sino un <strong>patrón consistente</strong>.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="controls">
-              <label for="doctorSelectContext">Médico a comparar</label>
-              <select id="doctorSelectContext"></select>
-            </div>
-            <canvas id="contextChart"></canvas>
-          </div>
-          <div class="card insight-card">
-            <h3>Lectura rápida</h3>
-            <div id="contextInsight" class="stat-list"></div>
-          </div>
-        </div>
-
-        <div class="card question-card">
-          <h3>Pregunta de desbloqueo</h3>
-          <p>Junto con la concentración horaria, ¿qué variable aporta la señal más fuerte en el caso anómalo?</p>
-          <div class="answers" data-question="q3">
-            <button data-correct="false">Sexo del paciente</button>
-            <button data-correct="true">Visita domiciliaria el mismo día</button>
-            <button data-correct="false">Tipo de consulta del médico</button>
-          </div>
-          <p class="feedback" id="feedback-q3"></p>
-        </div>
-      </section>
-
-      <section class="stage-panel" id="stage-4">
-        <div class="card">
-          <div class="stage-header">
-            <div>
-              <span class="kicker">Fase 4</span>
-              <h2>Contraste estadístico</h2>
+              <h2>Sala de contrastes</h2>
             </div>
             <span class="badge">Inferencia</span>
           </div>
           <p>
-            En esta fase puedes elegir un médico y una señal binaria. La web comparará <strong>ese médico frente al resto</strong>
-            usando intervalos de confianza y una prueba z para diferencia de proporciones.
+            Elige un médico y una señal binaria. La comparación se hace siempre contra el resto del sistema. Esta sala está pensada para
+            ayudarte a entender <strong>qué pregunta responde cada contraste</strong>, <strong>qué variable entra realmente en juego</strong> y <strong>qué significa cada salida numérica</strong>.
           </p>
+          <div class="explain-box"><strong>Qué se contrasta aquí:</strong> para cada indicador se construye una variable binaria (“la señal está presente / no está presente”) y se compara su proporción en un médico frente al resto del sistema. La hipótesis nula plantea que ambas proporciones son iguales; la alternativa plantea que difieren.</div>
         </div>
 
         <div class="grid-3 controls-row">
@@ -225,82 +287,107 @@
               <option value="home_death">Fallecimiento en domicilio</option>
             </select>
           </div>
-          <div class="card compact center-card">
-            <button class="primary-btn full-btn" id="runTestBtn">Calcular contraste</button>
+          <div class="card compact center-card auto-card">
+            <p class="auto-note"><strong>Actualización automática</strong><br>El contraste se recalcula al cambiar médico o indicador.</p>
           </div>
         </div>
 
         <div class="grid-2">
           <div class="card">
-            <h3>Resultado</h3>
-            <div id="testResults" class="test-results"></div>
+            <div class="card-title-row">
+              <h3>Resultado</h3>
+              <span class="soft-badge">p + efecto</span>
+            </div>
+            <div id="testResults" class="test-results">
+              <div class="placeholder-box">Selecciona un médico para ver el contraste.</div>
+            </div>
           </div>
           <div class="card">
-            <h3>Tabla 2×2</h3>
-            <div id="contingencyTable"></div>
+            <div class="card-title-row">
+              <h3>Tabla 2×2</h3>
+              <span class="soft-badge">Comparación</span>
+            </div>
+            <div id="contingencyTable">
+              <div class="placeholder-box">La tabla 2×2 aparecerá aquí junto con una lectura breve del contraste.</div>
+            </div>
           </div>
         </div>
 
-        <div class="card question-card">
-          <h3>Pregunta de desbloqueo</h3>
-          <p>¿Qué interpretación es la más correcta si una señal presenta p muy pequeño y un efecto grande?</p>
-          <div class="answers" data-question="q4">
-            <button data-correct="false">Prueba que el médico es culpable.</button>
-            <button data-correct="true">Apoya que el patrón es anómalo y merece investigación adicional, pero no prueba causalidad.</button>
-            <button data-correct="false">Permite ignorar explicaciones alternativas.</button>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Qué significa cada salida</h3>
+            <ul class="checklist compact-list">
+              <li><strong>Proporción del médico / resto:</strong> porcentaje de casos en los que la señal está presente en cada grupo.</li>
+              <li><strong>IC 95%:</strong> rango plausible para esa proporción; da una idea de la precisión de la estimación.</li>
+              <li><strong>Diferencia de proporciones:</strong> resta entre ambos porcentajes. Describe tamaño del efecto en puntos porcentuales.</li>
+              <li><strong>Odds ratio:</strong> compara las odds de que la señal aparezca en el médico frente al resto. Valores mayores que 1 indican mayor presencia relativa en el médico.</li>
+              <li><strong>Prueba z de dos proporciones:</strong> contrasta si la diferencia entre porcentajes observados sería compatible con la hipótesis nula de igualdad de proporciones.</li>
+              <li><strong>Importante:</strong> un p-valor no mide por sí solo ni la magnitud práctica del efecto ni la importancia del hallazgo.</li>
+            </ul>
           </div>
-          <p class="feedback" id="feedback-q4"></p>
+          <div class="card">
+            <h3>Integrar en el expediente</h3>
+            <p class="muted">Añade el contraste cuando tengas claro qué variable binaria estás comparando, qué hipótesis se ha formulado y cómo vas a usar el resultado dentro de tu razonamiento.</p>
+            <button class="primary-btn" id="addContrastEvidenceBtn">Añadir contraste al expediente</button>
+            <p class="feedback-inline" id="contrastFeedback"></p>
+          </div>
         </div>
       </section>
 
-      <section class="stage-panel" id="stage-5">
+      <section class="stage-panel" id="stage-3">
         <div class="card">
           <div class="stage-header">
             <div>
-              <span class="kicker">Fase 5</span>
-              <h2>Decisión final</h2>
+              <span class="kicker">Fase 3</span>
+              <h2>Informe final</h2>
             </div>
             <span class="badge">Síntesis</span>
           </div>
           <p>
-            Ya has revisado descriptiva, visualización e inferencia. Cierra el caso con una decisión prudente y prepara tu informe.
+            Cierra el expediente como lo haría un analista responsable: selecciona el médico prioritario, decide qué evidencias sostienen
+            mejor tu alerta y redacta una conclusión clara y defendible apta para convertir en PDF.
           </p>
         </div>
 
         <div class="grid-2">
           <div class="card">
-            <h3>Conclusión recomendada</h3>
-            <div id="finalRecommendation" class="final-box"></div>
+            <div class="controls stacked">
+              <label for="finalDoctorSelect">Médico prioritario para investigación formal</label>
+              <select id="finalDoctorSelect"></select>
+            </div>
+            <div class="controls stacked">
+              <label>Evidencias que quieres incluir</label>
+              <div id="finalEvidenceChecklist" class="evidence-checklist"></div>
+            </div>
+            <div class="controls stacked">
+              <label for="reasoningArea">Justificación analítica</label>
+              <textarea id="reasoningArea" rows="6" placeholder="Explica qué variables pesan más en tu lectura del caso, qué comparaciones has usado y cómo integras descriptiva e inferencia."></textarea>
+            </div>
+            <div class="controls stacked">
+              <label for="alternativeArea">Explicaciones alternativas o datos adicionales necesarios</label>
+              <textarea id="alternativeArea" rows="5" placeholder="Edad, complejidad clínica, sesgos de registro, composición de cartera, cambios de práctica, necesidad de auditoría adicional..."></textarea>
+            </div>
+            <div class="module-actions">
+              <button class="primary-btn" id="generateDraftBtn">Generar borrador</button>
+              <button class="ghost-btn" id="copyDraftBtn">Copiar texto</button>
+              <button class="ghost-btn" id="downloadDraftBtn">Descargar .txt</button>
+            </div>
+            <p class="feedback-inline" id="finalFeedback"></p>
           </div>
           <div class="card">
-            <h3>Checklist para el PDF</h3>
-            <ul class="checklist">
-              <li>Pregunta de investigación bien formulada.</li>
-              <li>Resumen descriptivo inicial y límites de la tasa bruta.</li>
-              <li>Patrones temporales y de visitas domiciliarias.</li>
-              <li>Al menos un contraste de proporciones bien interpretado.</li>
-              <li>Diferencia clara entre anomalía estadística y culpabilidad.</li>
-              <li>Posibles explicaciones alternativas y datos adicionales necesarios.</li>
-            </ul>
+            <div class="card-title-row">
+              <h3>Borrador exportable</h3>
+              <span class="soft-badge">Para el PDF</span>
+            </div>
+            <pre id="draftOutput" class="draft-output">Todavía no has generado el borrador final.</pre>
           </div>
-        </div>
-
-        <div class="card question-card">
-          <h3>Cierre</h3>
-          <p>¿Qué médico merece ser elevado a investigación formal prioritaria?</p>
-          <div class="answers" data-question="q5">
-            <button data-value="D10">D10</button>
-            <button data-value="D13" data-correct="true">D13</button>
-            <button data-value="D18">D18</button>
-          </div>
-          <p class="feedback" id="feedback-q5"></p>
         </div>
       </section>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>Diseñado para publicación estática en GitHub Pages. HTML, CSS y JavaScript puro.</p>
+    <p>Operación Hipócrates · Expediente interactivo para publicación estática en GitHub Pages.</p>
   </footer>
 
   <script src="./data.js"></script>

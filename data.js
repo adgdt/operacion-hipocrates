@@ -5,140 +5,140 @@ window.HIPPOCRATES_DATA = {
       "doctor_practice_type": "rural",
       "patients": 231,
       "deaths": 13,
-      "mortality_rate": 0.056277
+      "mortality_rate": 0.05627705627705628
     },
     {
       "doctor_id": "D02",
       "doctor_practice_type": "urban",
       "patients": 258,
       "deaths": 17,
-      "mortality_rate": 0.065891
+      "mortality_rate": 0.06589147286821706
     },
     {
       "doctor_id": "D03",
       "doctor_practice_type": "urban",
       "patients": 214,
       "deaths": 16,
-      "mortality_rate": 0.074766
+      "mortality_rate": 0.07476635514018691
     },
     {
       "doctor_id": "D04",
       "doctor_practice_type": "urban",
       "patients": 255,
       "deaths": 14,
-      "mortality_rate": 0.054902
+      "mortality_rate": 0.054901960784313725
     },
     {
       "doctor_id": "D05",
       "doctor_practice_type": "suburban",
       "patients": 240,
       "deaths": 17,
-      "mortality_rate": 0.070833
+      "mortality_rate": 0.07083333333333333
     },
     {
       "doctor_id": "D06",
       "doctor_practice_type": "suburban",
       "patients": 196,
       "deaths": 11,
-      "mortality_rate": 0.056122
+      "mortality_rate": 0.05612244897959184
     },
     {
       "doctor_id": "D07",
       "doctor_practice_type": "urban",
       "patients": 190,
       "deaths": 7,
-      "mortality_rate": 0.036842
+      "mortality_rate": 0.03684210526315789
     },
     {
       "doctor_id": "D08",
       "doctor_practice_type": "urban",
       "patients": 214,
       "deaths": 14,
-      "mortality_rate": 0.065421
+      "mortality_rate": 0.06542056074766354
     },
     {
       "doctor_id": "D09",
       "doctor_practice_type": "rural",
       "patients": 249,
       "deaths": 13,
-      "mortality_rate": 0.052209
+      "mortality_rate": 0.05220883534136546
     },
     {
       "doctor_id": "D10",
       "doctor_practice_type": "urban",
       "patients": 215,
       "deaths": 18,
-      "mortality_rate": 0.083721
+      "mortality_rate": 0.08372093023255814
     },
     {
       "doctor_id": "D11",
       "doctor_practice_type": "suburban",
       "patients": 186,
       "deaths": 8,
-      "mortality_rate": 0.043011
+      "mortality_rate": 0.043010752688172046
     },
     {
       "doctor_id": "D12",
       "doctor_practice_type": "urban",
       "patients": 228,
       "deaths": 9,
-      "mortality_rate": 0.039474
+      "mortality_rate": 0.039473684210526314
     },
     {
       "doctor_id": "D13",
       "doctor_practice_type": "urban",
-      "patients": 225,
+      "patients": 320,
       "deaths": 20,
-      "mortality_rate": 0.088889
+      "mortality_rate": 0.0625
     },
     {
       "doctor_id": "D14",
       "doctor_practice_type": "urban",
       "patients": 232,
       "deaths": 11,
-      "mortality_rate": 0.047414
+      "mortality_rate": 0.04741379310344827
     },
     {
       "doctor_id": "D15",
       "doctor_practice_type": "rural",
       "patients": 215,
       "deaths": 8,
-      "mortality_rate": 0.037209
+      "mortality_rate": 0.037209302325581395
     },
     {
       "doctor_id": "D16",
       "doctor_practice_type": "urban",
       "patients": 229,
       "deaths": 13,
-      "mortality_rate": 0.056769
+      "mortality_rate": 0.056768558951965066
     },
     {
       "doctor_id": "D17",
       "doctor_practice_type": "suburban",
       "patients": 188,
       "deaths": 11,
-      "mortality_rate": 0.058511
+      "mortality_rate": 0.05851063829787234
     },
     {
       "doctor_id": "D18",
       "doctor_practice_type": "suburban",
       "patients": 249,
       "deaths": 19,
-      "mortality_rate": 0.076305
+      "mortality_rate": 0.07630522088353414
     },
     {
       "doctor_id": "D19",
       "doctor_practice_type": "suburban",
       "patients": 195,
       "deaths": 8,
-      "mortality_rate": 0.041026
+      "mortality_rate": 0.041025641025641026
     },
     {
       "doctor_id": "D20",
       "doctor_practice_type": "rural",
       "patients": 197,
       "deaths": 9,
-      "mortality_rate": 0.045685
+      "mortality_rate": 0.04568527918781726
     }
   ],
   "deaths": [
