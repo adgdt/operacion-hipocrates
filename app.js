@@ -720,10 +720,8 @@ function runSelectedTest() {
   const doctor = byId("doctorSelectTest").value;
   const indicator = byId("indicatorSelect").value;
   const resultsBox = byId("testResults");
-  const tableBox = byId("contingencyTable");
   if (!doctor) {
     resultsBox.innerHTML = `<div class="placeholder-box">Selecciona un médico para ver el contraste.</div>`;
-    tableBox.innerHTML = `<div class="placeholder-box">La tabla 2×2 aparecerá aquí junto con la formulación del contraste.</div>`;
     lastContrast = null;
     return;
   }
@@ -774,21 +772,6 @@ function runSelectedTest() {
     </div>
     <p class="note">${narrative}</p>
     <p class="note">Lectura minima: el porcentaje describe la magnitud observada; el intervalo de confianza resume precision; el p-valor responde a la compatibilidad con la hipótesis nula; y la conclusión requiere integrar este resultado con el resto del expediente.</p>
-  `;
-
-  tableBox.innerHTML = `
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th></th><th>Señal presente</th><th>Señal ausente</th><th>Total</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>${doctor}</td><td>${a}</td><td>${b}</td><td>${own.length}</td></tr>
-          <tr><td>Resto</td><td>${c}</td><td>${d}</td><td>${rest.length}</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tiny-note">Hipótesis nula (H0): la proporción de ${indicatorLabel(indicator)} es la misma en ${doctor} y en el resto del sistema. Hipótesis alternativa (H1): ambas proporciones difieren.</p>
   `;
 
   lastContrast = {
