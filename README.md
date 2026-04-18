@@ -45,4 +45,3 @@ La visualización usa `Chart.js` desde CDN. Si prefieres evitar dependencias ext
 
 ## Ajuste de diseño didáctico
 - La vista inicial de tasa bruta se presenta en orden neutro (alfabético).
-- La cartera de D13 se ha ampliado para que la tasa bruta no revele demasiado pronto el caso.
